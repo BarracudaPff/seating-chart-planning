@@ -1,7 +1,16 @@
-import * as React from "react";
-import { render } from "react-dom";
-import App from "./components/App";
+import {render} from 'react-dom'
+import React from 'react'
+import {App} from "./components/App"
+import {BrowserRouter, Route, Routes} from "react-router-dom"
 
-const rootEl = document.getElementById("root");
+const root = document.getElementById('root')
 
-render(<App />, rootEl);
+render(
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<App/>} key={Math.random()}/>
+            <Route path="about" element={<App/>} key={Math.random()}/>
+        </Routes>
+    </BrowserRouter>,
+    root
+)
