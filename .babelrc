@@ -4,7 +4,9 @@
     "@babel/preset-react",
     "@babel/preset-typescript"
   ],
-  "plugins": [],
+  "plugins": [
+    "react-hot-loader/babel"
+  ],
   "env": {
     "production": {
       "presets": [

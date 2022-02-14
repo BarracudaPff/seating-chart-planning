@@ -1,5 +1,3 @@
-@import '~antd/dist/antd.css';
-
 $bg-color: yellow;
 $border-color: red;
 
@@ -11,13 +9,4 @@ $border-color: red;
   p {
     background-color: $bg-color;
   }
-}
-
-.ad {
-  width: 500px;
-}
-
-.long-input {
-  width: 500px;
-  height: 500px;
 }
