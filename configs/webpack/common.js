@@ -1,10 +1,15 @@
 // shared config (dev and prod)
 const { resolve } = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
+    fallback: {
+      "zlib": require.resolve("browserify-zlib"),
+      "stream": require.resolve("stream-browserify")
+    }
   },
   context: resolve(__dirname, "../../src"),
   module: {
@@ -31,7 +36,10 @@ module.exports = {
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "index.html.ejs" })],
+  plugins: [
+      new HtmlWebpackPlugin({ template: "index.html.ejs" }),
+      new webpack.DefinePlugin({ process: { env: {}}})
+  ],
   externals: {
     react: "React",
     "react-dom": "ReactDOM",
