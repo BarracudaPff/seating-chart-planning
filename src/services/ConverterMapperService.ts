@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import * as zlib from "zlib";
 import {IncorrectConverterDataVersion, NotSupportedConverterVersion} from "../models/Errors";
 
@@ -18,7 +19,7 @@ const Converter: ConverterType = {
             // Version 0
             return JSON.parse(
                 zlib.inflateSync(Buffer.from(str.slice(1), "base64"))
-                    .toString("utf8"),
+                    .toString("utf8")
             );
         },
         latest: () => undefined
@@ -29,7 +30,7 @@ const Converter: ConverterType = {
             return "0" + zlib.deflateSync(JSON.stringify(obj)).toString("base64");
         },
         latest: () => ""
-    },
+    }
 };
 Converter.decode.latest = Converter.decode[0]
 Converter.encode.latest = Converter.encode[0]
@@ -55,8 +56,8 @@ export class ConverterMapperService {
         let obj
         try {
             obj = Converter.decode[version](str);
-        } catch (e) {
-            throw new IncorrectConverterDataVersion(str)
+        } catch (e: any) {
+            throw new IncorrectConverterDataVersion(str, e?.message)
         }
         return obj
     }

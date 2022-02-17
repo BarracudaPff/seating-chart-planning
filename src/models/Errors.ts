@@ -7,7 +7,7 @@ export class NotSupportedConverterVersion extends CustomError {
 }
 
 export class IncorrectConverterDataVersion extends CustomError {
-    public constructor(data: string) {
-        super("Converter data is incorrect or corrupted. \nData: `" + data + "`.")
+    public constructor(data: string, msg?: string) {
+        super("Converter data is incorrect or corrupted. \nData: `" + data + "`." + "\n" + msg)
     }
 }
