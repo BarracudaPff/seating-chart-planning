@@ -1,5 +1,5 @@
 import * as React from "react"
-import "./../assets/scss/App.scss"
+import "../assets/styles/App.scss"
 
 const reactLogo = require("./../assets/img/react_logo.svg")
 

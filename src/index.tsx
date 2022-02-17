@@ -1,16 +1,18 @@
 import {render} from 'react-dom'
 import React from 'react'
-import {App} from "./components/App"
-import {BrowserRouter, Route, Routes} from "react-router-dom"
+import {Provider} from 'react-redux'
+import {ConfigProvider} from 'antd'
+import store from "./redux/store"
+import AppRoute from "./router"
 
-const root = document.getElementById('root')
+import "./assets/styles/main.scss"
 
 render(
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<App/>} key={Math.random()}/>
-            <Route path="about" element={<App/>} key={Math.random()}/>
-        </Routes>
-    </BrowserRouter>,
-    root
+    <Provider store={store}>
+        <ConfigProvider>
+            <AppRoute/>
+        </ConfigProvider>
+    </Provider>
+    ,
+    document.getElementById('root')
 )
