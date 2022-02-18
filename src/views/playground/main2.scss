@@ -1,0 +1,63 @@
+@import "antd/dist/antd.css";
+
+.ant-btn-primary {
+  margin: 4px;
+  font-size: 12px;
+}
+
+.ant-divider-horizontal {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.collapse-toggle-div {
+  margin: 0 8px
+}
+
+.smooth {
+  //transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  //transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
+  transition: all 0.2s;
+}
+
+.footer-background {
+  background-color: #7b7d80;
+}
+
+.icon-wrapper {
+  position: relative;
+  padding: 0 30px;
+  width: 100%;
+}
+
+.icon-wrapper .anticon {
+  position: absolute;
+  top: -2px;
+  width: 16px;
+  height: 16px;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.icon-wrapper .icon-wrapper-active {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.icon-wrapper .anticon:first-child {
+  left: 0;
+}
+
+.icon-wrapper .anticon:last-child {
+  right: 0;
+}
+
+.color-preview {
+  height: 14px;
+  width: 14px;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset;
+}
