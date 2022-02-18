@@ -38,6 +38,7 @@ import {Fabric} from "./Fabric"
 import {Renderer} from "../../core/editor"
 import {fabric} from "fabric"
 import {round} from "lodash"
+import { useKeyPress } from "../../utils/hooks"
 
 const {SubMenu} = Menu
 const {Header, Content, Sider, Footer} = Layout
@@ -67,6 +68,12 @@ const Playground: FC<Props> = () => {
     const [fillColor, setFillColor] = useState<string>("transparent")
     const [showColorPicker, setShowColorPicker] = useState<boolean>(false)
     const [exportLoading, setExportLoading] = useState<boolean>(false)
+
+    const cKey = useKeyPress("c", {ctrlKey: true})
+    const vKey = useKeyPress("v", {ctrlKey: true})
+
+    cKey && renderer?.copyObject()
+    vKey && renderer?.pasteObject()
 
     useEffect(() => {
         let animationFrameId: number
