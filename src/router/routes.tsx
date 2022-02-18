@@ -13,7 +13,7 @@ export function MainRoutes() {
     return useRoutes([
         {
             path: "/",
-            element: _Login
+            element: <Playground/>
         },
         {
             path: "/login",
