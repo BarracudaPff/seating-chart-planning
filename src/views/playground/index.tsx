@@ -66,6 +66,7 @@ const Playground: FC<Props> = () => {
     const [modalDataString, setModalDataString] = useState<string>()
     const [fillColor, setFillColor] = useState<string>("transparent")
     const [showColorPicker, setShowColorPicker] = useState<boolean>(false)
+    const [exportLoading, setExportLoading] = useState<boolean>(false)
 
     useEffect(() => {
         let animationFrameId: number
@@ -94,8 +95,11 @@ const Playground: FC<Props> = () => {
     function initRenderer(renderer: Renderer) {
         setRenderer(renderer)
         //https://css-tricks.com/using-requestanimationframe-with-react-hooks/
-        renderer.setActiveObjectListener(obj => {
-            if (!obj) {
+    }
+
+    function activateOL() {
+        renderer?.setActiveObjectListener(obj => {
+            if (!obj || !!obj?.length) {
                 setActiveObject(undefined)
                 return
             }
@@ -157,19 +161,31 @@ const Playground: FC<Props> = () => {
         if (!renderer) return
         switch (format) {
             case "png": {
+                setExportLoading(true)
                 const link = document.createElement("a")
-                link.href = renderer.dataURL("png", quality)
-                link.setAttribute("download", `image-${new Date().getTime()}.png`)
-                document.body.appendChild(link)
-                link.click()
+                renderer.dataURL("png", quality, fillColor).then(data => {
+                    link.href = data
+                    link.setAttribute("download", `image-${new Date().getTime()}.png`)
+                    document.body.appendChild(link)
+                    link.click()
+                }).finally(()=> {
+                    setExportLoading(false)
+                    link.remove()
+                })
                 return
             }
             case "jpeg": {
+                setExportLoading(true)
                 const link = document.createElement("a")
-                link.href = renderer.dataURL("jpeg", quality)
-                link.setAttribute("download", `image-${new Date().getTime()}.jpeg`)
-                document.body.appendChild(link)
-                link.click()
+                renderer.dataURL("jpeg", quality, fillColor).then(data => {
+                    link.href = data
+                    link.setAttribute("download", `image-${new Date().getTime()}.jpeg`)
+                    document.body.appendChild(link)
+                    link.click()
+                }).finally(()=> {
+                    setExportLoading(false)
+                    link.remove()
+                })
                 return
             }
             case "string":
@@ -278,7 +294,7 @@ const Playground: FC<Props> = () => {
                 theme="light"
                 className="site-layout-background unselectable">
                 <Typography.Title level={3} style={{margin: 16, marginBottom: 0}}>Attributes</Typography.Title>
-                <Space direction="vertical" style={{padding: 16, width: "100%"}}>
+                <Space direction="vertical" style={{padding: 16, width: "100%", height: "calc(100% - 100px)"}}>
                     {activeObject && <Space direction="vertical">
                       <Typography.Title level={5}>Coordinates</Typography.Title>
                       <Space>
@@ -332,7 +348,7 @@ const Playground: FC<Props> = () => {
                           setFillColor(hex)
                       }}
                     />}
-                    <Button type={"primary"} onClick={exportTo} style={{marginTop: 16, width: "100%"}}>{"Export to " + format}</Button>
+                    <Button type={"primary"} onClick={exportTo} loading={exportLoading} style={{marginTop: 16, width: "100%"}}>{"Export to " + format}</Button>
                     <Button type={"dashed"} onClick={importFrom} style={{marginTop: 16, width: "100%"}}>{"Import from string"}</Button>
                     {/*<div className="icon-wrapper">*/}
                     {/*    <FrownOutlined className={quality >= 5 ? "" : "icon-wrapper-active"}/>*/}
@@ -344,6 +360,7 @@ const Playground: FC<Props> = () => {
                     {/*</Space>*/}
                     {/*</Space>*/}
                 </Space>
+                <Button title={"In test mode. Needs good PC or 'll be too laggy :("} style={{alignSelf: "flex-end", marginLeft: 16, width: "calc(100% - 32px)"}} type={"dashed"} danger onClick={activateOL}>Activate listeners</Button>
             </Sider>
         )
     }

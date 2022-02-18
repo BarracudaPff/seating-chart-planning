@@ -256,7 +256,7 @@ export class Renderer {
     }
 
     addText(text: string, props: Partial<fabric.ITextOptions>) {
-        const object = new fabric.Textbox(text, { ...TEXT, ...props});
+        const object = new fabric.Textbox(text, {...TEXT, ...props});
         object.set({
             text: text
         });
@@ -291,19 +291,18 @@ export class Renderer {
         this.canvas.loadFromJSON(ConverterMapperService.parse(data), () => onLoad && onLoad())
     }
 
-    addCircleBigTable = (props: Partial<fabric.IObjectOptions>) => this.addTable(files.tableCircleBig, props,false)
-    addCircleSmallTable = (props: Partial<fabric.IObjectOptions>) => this.addTable(files.tableCircleSmall, props,false)
+    addCircleBigTable = (props: Partial<fabric.IObjectOptions>) => this.addTable(files.tableCircleBig, props, false)
+    addCircleSmallTable = (props: Partial<fabric.IObjectOptions>) => this.addTable(files.tableCircleSmall, props, false)
     addRectangleTable = (props: Partial<fabric.IObjectOptions>) => this.addTable(files.tableRectangle, props)
 
     addRectangleSplittedTable = (props: Partial<fabric.IObjectOptions>) => this.addTable(files.tableRectangleSplitted, props)
 
-    dataURL = (format: "png" | "jpeg", multiplier?: number) => this.canvas.toDataURL({
-        format,
-        quality: 1,
-        multiplier
-        // enableRetinaScaling: true
-    })
-
+    dataURL = async (format: "png" | "jpeg", quality: number, fillColor?: string) => {
+        this.setFillColor(fillColor)
+        const data = this.canvas.toDataURL({format, multiplier: quality, quality: 1})
+        this.setFillColor((this.canvas.backgroundImage as fabric.Image).backgroundColor)
+        return data
+    }
     toCSV = (format: "png" | "jpeg") => this.canvas.toSVG({
         // format,
         // quality: 1
@@ -345,7 +344,8 @@ export class Renderer {
 
     // | fabric.Pattern | fabric.Gradient
 
-    setFillColor(backgroundColor: string) {
+    setFillColor(backgroundColor?: string) {
+        if (!backgroundColor) return
         this.canvas.backgroundImage?.set({backgroundColor})
         this.canvas.backgroundImage?.render(this.canvas.getContext())
     }
